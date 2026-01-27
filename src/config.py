@@ -46,7 +46,6 @@ TITLE_EXCLUDE_KEYWORDS = [
     "principal",
     "cfo",
     # Specialist roles (not GL-focused)
-    "accounts payable",
     "accounts receivable",
     "payroll",
     "tax accountant",
