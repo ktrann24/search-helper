@@ -125,7 +125,7 @@ class EmailNotifier:
 
                 hot_jobs_html += f'''
                 <div style="border: 2px solid #f472b6; border-radius: 12px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 100%);">
-                    <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 6px;">{job.title}</div>
+                    <div style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 6px;">{job.title}</div>
                     <div style="font-size: 14px; color: #ec4899; font-weight: 500; margin-bottom: 4px;">{job.company}</div>
                     <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">📍 {job.location}</div>
                     {dept_html}
@@ -142,7 +142,7 @@ class EmailNotifier:
 
             all_jobs_html += f'''
             <div style="border-bottom: 1px solid #f3e8ff; padding: 14px 0;">
-                <div style="font-size: 14px; font-weight: 600; color: #1f2937; margin-bottom: 2px;">{job.title}</div>
+                <div style="font-size: 15px; font-weight: 700; color: #1f2937; margin-bottom: 2px;">{job.title}</div>
                 <div style="font-size: 13px; color: #ec4899; margin-bottom: 2px;">{job.company}{dept_html}</div>
                 <div style="font-size: 12px; color: #6b7280; margin-bottom: 6px;">📍 {job.location}</div>
                 <a href="{job.url}" style="font-size: 12px; color: #ec4899; text-decoration: none; font-weight: 500;">Apply →</a>
