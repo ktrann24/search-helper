@@ -64,9 +64,16 @@ class EmailNotifier:
             return False
 
         try:
+            # Support multiple recipients (comma-separated)
+            recipients = [
+                To(email.strip())
+                for email in self.to_email.split(",")
+                if email.strip()
+            ]
+
             message = Mail(
                 from_email=Email(self.from_email),
-                to_emails=To(self.to_email),
+                to_emails=recipients,
                 subject=subject,
                 html_content=Content("text/html", html_content),
             )
