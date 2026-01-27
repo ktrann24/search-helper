@@ -121,15 +121,15 @@ class EmailNotifier:
             for job in hot_jobs:
                 dept_html = ""
                 if job.department:
-                    dept_html = f'<div style="font-size: 12px; color: #888; margin-bottom: 8px;">{job.department}</div>'
+                    dept_html = f'<div style="font-size: 11px; color: #9ca3af; margin-bottom: 8px;">🏢 {job.department}</div>'
 
                 hot_jobs_html += f'''
-                <div style="border: 2px solid #22c55e; border-radius: 8px; padding: 16px; margin-bottom: 12px; background: #f0fdf4;">
-                    <div style="font-size: 16px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px;">{job.title}</div>
-                    <div style="font-size: 14px; color: #2563eb; font-weight: 500; margin-bottom: 4px;">{job.company}</div>
-                    <div style="font-size: 13px; color: #666; margin-bottom: 4px;">{job.location}</div>
+                <div style="border: 2px solid #f472b6; border-radius: 12px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 100%);">
+                    <div style="font-size: 15px; font-weight: 600; color: #1f2937; margin-bottom: 6px;">{job.title}</div>
+                    <div style="font-size: 14px; color: #ec4899; font-weight: 500; margin-bottom: 4px;">{job.company}</div>
+                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">📍 {job.location}</div>
                     {dept_html}
-                    <a href="{job.url}" style="display: inline-block; background-color: #22c55e; color: #ffffff; text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 13px; font-weight: 500;">View & Apply</a>
+                    <a href="{job.url}" style="display: inline-block; background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: 8px;">View & Apply →</a>
                 </div>
                 '''
 
@@ -138,14 +138,14 @@ class EmailNotifier:
         for job in all_jobs:
             dept_html = ""
             if job.department:
-                dept_html = f'<span style="color: #888;"> · {job.department}</span>'
+                dept_html = f'<span style="color: #9ca3af;"> · {job.department}</span>'
 
             all_jobs_html += f'''
-            <div style="border-bottom: 1px solid #e5e5e5; padding: 12px 0;">
-                <div style="font-size: 14px; font-weight: 500; color: #1a1a1a;">{job.title}</div>
-                <div style="font-size: 13px; color: #2563eb;">{job.company}{dept_html}</div>
-                <div style="font-size: 12px; color: #666; margin-bottom: 6px;">{job.location}</div>
-                <a href="{job.url}" style="font-size: 12px; color: #2563eb; text-decoration: none;">Apply →</a>
+            <div style="border-bottom: 1px solid #f3e8ff; padding: 14px 0;">
+                <div style="font-size: 14px; font-weight: 600; color: #1f2937; margin-bottom: 2px;">{job.title}</div>
+                <div style="font-size: 13px; color: #ec4899; margin-bottom: 2px;">{job.company}{dept_html}</div>
+                <div style="font-size: 12px; color: #6b7280; margin-bottom: 6px;">📍 {job.location}</div>
+                <a href="{job.url}" style="font-size: 12px; color: #ec4899; text-decoration: none; font-weight: 500;">Apply →</a>
             </div>
             '''
 
@@ -153,9 +153,9 @@ class EmailNotifier:
         hot_section = ""
         if hot_jobs:
             hot_section = f'''
-            <div style="margin-bottom: 32px;">
-                <h2 style="font-size: 18px; color: #22c55e; margin-bottom: 16px; border-bottom: 2px solid #22c55e; padding-bottom: 8px;">
-                    🔥 {len(hot_jobs)} New This Week
+            <div style="margin-bottom: 28px;">
+                <h2 style="font-size: 16px; color: #ec4899; margin: 0 0 16px 0; padding-bottom: 12px; border-bottom: 2px solid #fbcfe8;">
+                    ✨ {len(hot_jobs)} New This Week
                 </h2>
                 {hot_jobs_html}
             </div>
@@ -169,28 +169,37 @@ class EmailNotifier:
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
             <title>Job Search Digest</title>
         </head>
-        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f5f5f5;">
-            <div style="background-color: #ffffff; border-radius: 8px; padding: 24px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                <h1 style="color: #1a1a1a; font-size: 24px; margin-bottom: 8px;">Job Search Digest</h1>
-                <p style="color: #666; font-size: 14px; margin-bottom: 24px;">{date_str}</p>
+        <body style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff0f5;">
+            <div style="background-color: #ffffff; border-radius: 16px; padding: 32px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); border: 1px solid #fce7f3;">
 
-                <div style="background-color: #f0f7ff; border-radius: 6px; padding: 16px; margin-bottom: 24px;">
-                    <div style="font-size: 32px; font-weight: bold; color: #2563eb;">{len(all_jobs)}</div>
-                    <div style="color: #666; font-size: 14px;">open positions matching your criteria</div>
+                <!-- Header with Hello Kitty -->
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <img src="https://i.imgur.com/Ltuxrpu.png" alt="Hello Kitty" style="width: 80px; height: auto; margin-bottom: 12px;">
+                    <h1 style="color: #ec4899; font-size: 26px; margin: 0; font-weight: 600;">Job Search Digest</h1>
+                    <p style="color: #9ca3af; font-size: 14px; margin-top: 4px;">{date_str}</p>
+                </div>
+
+                <!-- Stats Card -->
+                <div style="background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%); border-radius: 12px; padding: 20px; margin-bottom: 24px; text-align: center; border: 1px solid #fbcfe8;">
+                    <div style="font-size: 42px; font-weight: bold; color: #ec4899;">{len(all_jobs)}</div>
+                    <div style="color: #6b7280; font-size: 14px;">open positions matching your criteria ✨</div>
                 </div>
 
                 {hot_section}
 
-                <div>
-                    <h2 style="font-size: 18px; color: #1a1a1a; margin-bottom: 16px; border-bottom: 1px solid #e5e5e5; padding-bottom: 8px;">
-                        All Open Positions
+                <!-- All Jobs Section -->
+                <div style="background-color: #fafafa; border-radius: 12px; padding: 20px; border: 1px solid #f3f4f6;">
+                    <h2 style="font-size: 16px; color: #374151; margin: 0 0 16px 0; padding-bottom: 12px; border-bottom: 2px solid #fce7f3;">
+                        📋 All Open Positions
                     </h2>
                     {all_jobs_html}
                 </div>
 
-                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #e5e5e5; font-size: 12px; color: #888; text-align: center;">
-                    <p>Monitoring {company_count} tech companies for GL/Accountant roles</p>
-                    <p>San Francisco & Remote positions</p>
+                <!-- Footer -->
+                <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #fce7f3; font-size: 12px; color: #9ca3af; text-align: center;">
+                    <p style="margin: 4px 0;">Monitoring {company_count} tech companies 💼</p>
+                    <p style="margin: 4px 0;">GL/Accountant roles · San Francisco & Remote</p>
+                    <p style="margin: 8px 0 0 0; font-size: 11px;">Good luck! 🍀</p>
                 </div>
             </div>
         </body>
