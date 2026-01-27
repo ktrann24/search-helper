@@ -1,9 +1,9 @@
 name: Daily Job Search
 
 on:
-  # Run daily at 8am PST (4pm UTC)
+  # Run daily at 7am PST (3pm UTC)
   schedule:
-    - cron: '0 16 * * *'
+    - cron: '0 15 * * *'
 
   # Allow manual trigger for testing
   workflow_dispatch:
