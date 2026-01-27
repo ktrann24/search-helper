@@ -3,7 +3,7 @@
 import json
 import os
 from datetime import datetime
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from typing import Optional
 
 
@@ -20,7 +20,7 @@ class Job:
 
 
 class JobStorage:
-    """Tracks seen jobs to avoid duplicate notifications."""
+    """Tracks job history for identifying new vs existing jobs."""
 
     def __init__(self, storage_path: str = "job_history.json"):
         self.storage_path = storage_path
@@ -54,50 +54,55 @@ class JobStorage:
         """Check if a job has not been seen before."""
         return job.id not in self.seen_jobs
 
-    def mark_seen(self, job: Job):
-        """Mark a job as seen."""
-        self.seen_jobs[job.id] = {
-            "title": job.title,
-            "company": job.company,
-            "url": job.url,
-            "first_seen": datetime.utcnow().isoformat(),
-        }
+    def get_first_seen(self, job: Job) -> Optional[str]:
+        """Get when a job was first seen, or None if new."""
+        if job.id in self.seen_jobs:
+            return self.seen_jobs[job.id].get("first_seen")
+        return None
 
     def filter_new_jobs(self, jobs: list[Job]) -> list[Job]:
         """Return only jobs that haven't been seen before."""
         return [job for job in jobs if self.is_new(job)]
 
-    def mark_jobs_seen(self, jobs: list[Job]):
-        """Mark multiple jobs as seen and save."""
-        for job in jobs:
-            self.mark_seen(job)
+    def sync_with_current_jobs(self, current_jobs: list[Job]):
+        """
+        Update storage to match currently open jobs.
+        - Add new jobs with first_seen timestamp
+        - Remove jobs that are no longer open (filled/closed)
+        """
+        current_job_ids = {job.id for job in current_jobs}
+
+        # Remove jobs that are no longer open
+        closed_jobs = [
+            job_id for job_id in self.seen_jobs
+            if job_id not in current_job_ids
+        ]
+        for job_id in closed_jobs:
+            del self.seen_jobs[job_id]
+
+        if closed_jobs:
+            print(f"Removed {len(closed_jobs)} closed/filled jobs from history")
+
+        # Add new jobs
+        new_count = 0
+        for job in current_jobs:
+            if job.id not in self.seen_jobs:
+                self.seen_jobs[job.id] = {
+                    "title": job.title,
+                    "company": job.company,
+                    "url": job.url,
+                    "first_seen": datetime.utcnow().isoformat(),
+                }
+                new_count += 1
+
+        if new_count:
+            print(f"Added {new_count} new jobs to history")
+
         self._save()
 
     def get_stats(self) -> dict:
         """Get storage statistics."""
         return {
-            "total_seen": len(self.seen_jobs),
+            "total_tracked": len(self.seen_jobs),
             "storage_path": self.storage_path,
         }
-
-    def cleanup_old_jobs(self, days: int = 90):
-        """Remove jobs older than specified days."""
-        cutoff = datetime.utcnow()
-        to_remove = []
-
-        for job_id, job_data in self.seen_jobs.items():
-            first_seen = job_data.get("first_seen", "")
-            if first_seen:
-                try:
-                    seen_date = datetime.fromisoformat(first_seen)
-                    if (cutoff - seen_date).days > days:
-                        to_remove.append(job_id)
-                except ValueError:
-                    pass
-
-        for job_id in to_remove:
-            del self.seen_jobs[job_id]
-
-        if to_remove:
-            self._save()
-            print(f"Cleaned up {len(to_remove)} old job records")

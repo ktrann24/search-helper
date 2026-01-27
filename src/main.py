@@ -136,38 +136,50 @@ def main():
     unique_jobs = processor.deduplicate(filtered_jobs)
     print(f"After deduplication: {len(unique_jobs)}")
 
-    # Filter for new jobs only
+    # Identify new jobs (not seen before)
     new_jobs = storage.filter_new_jobs(unique_jobs)
     print(f"New jobs (not seen before): {len(new_jobs)}")
 
-    # Sort by date (newest first)
-    sorted_jobs = processor.sort_by_date(new_jobs)
+    # Sort all jobs by date (newest first)
+    all_sorted = processor.sort_by_date(unique_jobs)
+
+    # Get top 5 newest as "hot" jobs
+    hot_jobs = processor.sort_by_date(new_jobs)[:5]
 
     # Print job details
-    if sorted_jobs:
-        print("\n" + "-" * 60)
-        print("NEW MATCHING JOBS:")
-        print("-" * 60)
-        for job in sorted_jobs:
-            print(f"\n{job.title}")
-            print(f"  Company:  {job.company}")
-            print(f"  Location: {job.location}")
-            if job.department:
-                print(f"  Team:     {job.department}")
-            print(f"  URL:      {job.url}")
+    print("\n" + "-" * 60)
+    print(f"HOT NEW JOBS ({len(hot_jobs)}):")
+    print("-" * 60)
+    for job in hot_jobs:
+        print(f"\n{job.title}")
+        print(f"  Company:  {job.company}")
+        print(f"  Location: {job.location}")
+        if job.department:
+            print(f"  Team:     {job.department}")
+        print(f"  URL:      {job.url}")
 
-    # Send email notification
+    print("\n" + "-" * 60)
+    print(f"ALL OPEN POSITIONS ({len(all_sorted)}):")
+    print("-" * 60)
+    for job in all_sorted[:20]:  # Show first 20 in console
+        print(f"  - {job.title} @ {job.company}")
+    if len(all_sorted) > 20:
+        print(f"  ... and {len(all_sorted) - 20} more")
+
+    # Send email notification with hot jobs and all jobs
     print("\n" + "=" * 60)
     print("Sending notification...")
-    success = notifier.send_digest(sorted_jobs, total_companies)
+    success = notifier.send_digest(
+        hot_jobs=hot_jobs,
+        all_jobs=all_sorted,
+        company_count=total_companies
+    )
 
     if success:
-        # Mark jobs as seen
-        storage.mark_jobs_seen(unique_jobs)
-        print(f"Marked {len(unique_jobs)} jobs as seen")
-
-    # Cleanup old job records
-    storage.cleanup_old_jobs(days=90)
+        # Sync storage with current open jobs
+        # This adds new jobs and removes closed ones
+        storage.sync_with_current_jobs(unique_jobs)
+        print(f"Tracking {len(unique_jobs)} open positions")
 
     print("\nDone!")
     return 0 if success else 1
