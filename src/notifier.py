@@ -1,13 +1,14 @@
 """Email notification service."""
 
 import os
+import uuid
 from datetime import datetime
 from dataclasses import dataclass
 from typing import Optional
 from string import Template
 
 from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Mail, Email, To, Content
+from sendgrid.helpers.mail import Mail, Email, To, Content, Header
 
 from .config import SENDGRID_API_KEY, FROM_EMAIL, TO_EMAIL, DRY_RUN
 
@@ -83,6 +84,10 @@ class EmailNotifier:
                 subject=subject,
                 html_content=Content("text/html", html_content),
             )
+
+            # Add unique Message-ID to prevent email threading
+            unique_id = uuid.uuid4().hex
+            message.header = Header("X-Entity-Ref-ID", unique_id)
 
             sg = SendGridAPIClient(self.api_key)
             response = sg.send(message)
