@@ -125,8 +125,8 @@ class EmailNotifier:
 
                 hot_jobs_html += f'''
                 <div style="border: 2px solid #f472b6; border-radius: 12px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 100%);">
-                    <div style="font-size: 16px; font-weight: 700; color: #1f2937; margin-bottom: 6px;">{job.title}</div>
-                    <div style="font-size: 14px; color: #ec4899; font-weight: 500; margin-bottom: 4px;">{job.company}</div>
+                    <div style="font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 6px;">{job.title}</div>
+                    <div style="font-size: 14px; color: #be185d; font-weight: 600; margin-bottom: 4px;">{job.company}</div>
                     <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">📍 {job.location}</div>
                     {dept_html}
                     <a href="{job.url}" style="display: inline-block; background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: 8px;">View & Apply →</a>
@@ -142,8 +142,8 @@ class EmailNotifier:
 
             all_jobs_html += f'''
             <div style="border-bottom: 1px solid #f3e8ff; padding: 14px 0;">
-                <div style="font-size: 15px; font-weight: 700; color: #1f2937; margin-bottom: 2px;">{job.title}</div>
-                <div style="font-size: 13px; color: #ec4899; margin-bottom: 2px;">{job.company}{dept_html}</div>
+                <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 2px;">{job.title}</div>
+                <div style="font-size: 13px; color: #be185d; font-weight: 600; margin-bottom: 2px;">{job.company}{dept_html}</div>
                 <div style="font-size: 12px; color: #6b7280; margin-bottom: 6px;">📍 {job.location}</div>
                 <a href="{job.url}" style="font-size: 12px; color: #ec4899; text-decoration: none; font-weight: 500;">Apply →</a>
             </div>
@@ -175,7 +175,7 @@ class EmailNotifier:
                 <!-- Header with Hello Kitty -->
                 <div style="text-align: center; margin-bottom: 24px;">
                     <img src="https://raw.githubusercontent.com/ktrann24/search-helper/main/hellokitty.jpeg" alt="Hello Kitty" style="width: 80px; height: auto; margin-bottom: 12px;">
-                    <h1 style="color: #ec4899; font-size: 26px; margin: 0; font-weight: 600;">Job Search Digest</h1>
+                    <h1 style="color: #ec4899; font-size: 26px; margin: 0; font-weight: 600;">Jessica's Job Digest</h1>
                     <p style="color: #9ca3af; font-size: 14px; margin-top: 4px;">{date_str}</p>
                 </div>
 
