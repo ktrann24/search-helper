@@ -1,0 +1,50 @@
+name: Daily Job Search
+
+on:
+  # Run daily at 8am PST (4pm UTC)
+  schedule:
+    - cron: '0 16 * * *'
+
+  # Allow manual trigger for testing
+  workflow_dispatch:
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Download job history
+        uses: actions/download-artifact@v4
+        with:
+          name: job-history
+          path: .
+        continue-on-error: true  # First run won't have history
+
+      - name: Run job search
+        env:
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          FROM_EMAIL: ${{ secrets.FROM_EMAIL }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+        run: |
+          python -m src.main
+
+      - name: Upload job history
+        uses: actions/upload-artifact@v4
+        with:
+          name: job-history
+          path: job_history.json
+          retention-days: 90
+          overwrite: true
