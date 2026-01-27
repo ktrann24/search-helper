@@ -120,38 +120,42 @@ class EmailNotifier:
         """Render HTML email with hot jobs and all open positions."""
         date_str = datetime.now().strftime("%A, %B %d, %Y")
 
-        # Build hot jobs HTML
+        # Build hot jobs HTML using tables for better email client compatibility
         hot_jobs_html = ""
         if hot_jobs:
             for job in hot_jobs:
                 dept_html = ""
                 if job.department:
-                    dept_html = f'<div style="font-size: 11px; color: #9ca3af; margin-bottom: 8px;">🏢 {job.department}</div>'
+                    dept_html = f'<p style="font-size: 11px; color: #6b7280; margin: 0 0 8px 0;">🏢 {job.department}</p>'
 
                 hot_jobs_html += f'''
-                <div style="border: 2px solid #f472b6; border-radius: 12px; padding: 16px; margin-bottom: 12px; background: linear-gradient(135deg, #fdf2f8 0%, #ffffff 100%);">
-                    <div style="font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 6px;">{job.title}</div>
-                    <div style="font-size: 14px; color: #be185d; font-weight: 600; margin-bottom: 4px;">{job.company}</div>
-                    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px;">📍 {job.location}</div>
-                    {dept_html}
-                    <a href="{job.url}" style="display: inline-block; background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%); color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; margin-top: 8px;">View & Apply →</a>
-                </div>
+                <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border: 2px solid #f472b6; border-radius: 12px; margin-bottom: 12px; background-color: #ffffff;">
+                    <tr><td style="padding: 16px; background-color: #ffffff;">
+                        <p style="font-size: 16px; font-weight: 700; color: #1f2937; margin: 0 0 6px 0;"><span style="color: #1f2937;">{job.title}</span></p>
+                        <p style="font-size: 14px; color: #be185d; font-weight: 600; margin: 0 0 4px 0;">{job.company}</p>
+                        <p style="font-size: 12px; color: #6b7280; margin: 0 0 4px 0;">📍 {job.location}</p>
+                        {dept_html}
+                        <a href="{job.url}" style="display: inline-block; background-color: #ec4899; color: #ffffff; text-decoration: none; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 500;">View & Apply →</a>
+                    </td></tr>
+                </table>
                 '''
 
-        # Build all jobs HTML
+        # Build all jobs HTML using tables for better email client compatibility
         all_jobs_html = ""
         for job in all_jobs:
             dept_html = ""
             if job.department:
-                dept_html = f'<span style="color: #9ca3af;"> · {job.department}</span>'
+                dept_html = f'<span style="color: #6b7280;"> · {job.department}</span>'
 
             all_jobs_html += f'''
-            <div style="border-bottom: 1px solid #f3e8ff; padding: 14px 0;">
-                <div style="font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 2px;">{job.title}</div>
-                <div style="font-size: 13px; color: #be185d; font-weight: 600; margin-bottom: 2px;">{job.company}{dept_html}</div>
-                <div style="font-size: 12px; color: #6b7280; margin-bottom: 6px;">📍 {job.location}</div>
-                <a href="{job.url}" style="font-size: 12px; color: #ec4899; text-decoration: none; font-weight: 500;">Apply →</a>
-            </div>
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-bottom: 1px solid #f3e8ff;">
+                <tr><td style="padding: 14px 0;">
+                    <p style="font-size: 15px; font-weight: 700; color: #1f2937; margin: 0 0 2px 0;"><span style="color: #1f2937;">{job.title}</span></p>
+                    <p style="font-size: 13px; color: #be185d; font-weight: 600; margin: 0 0 2px 0;">{job.company}{dept_html}</p>
+                    <p style="font-size: 12px; color: #6b7280; margin: 0 0 6px 0;">📍 {job.location}</p>
+                    <a href="{job.url}" style="font-size: 12px; color: #ec4899; text-decoration: none; font-weight: 500;">Apply →</a>
+                </td></tr>
+            </table>
             '''
 
         # Build hot section
