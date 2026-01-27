@@ -140,8 +140,8 @@ def main():
     new_jobs = storage.filter_new_jobs(unique_jobs)
     print(f"New jobs (not seen before): {len(new_jobs)}")
 
-    # Sort by company
-    sorted_jobs = processor.sort_by_company(new_jobs)
+    # Sort by date (newest first)
+    sorted_jobs = processor.sort_by_date(new_jobs)
 
     # Print job details
     if sorted_jobs:

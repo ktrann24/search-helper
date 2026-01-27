@@ -86,3 +86,10 @@ class JobProcessor:
     def sort_by_company(self, jobs: list[Job]) -> list[Job]:
         """Sort jobs alphabetically by company name."""
         return sorted(jobs, key=lambda j: j.company.lower())
+
+    def sort_by_date(self, jobs: list[Job]) -> list[Job]:
+        """Sort jobs by posting date, newest first."""
+        def get_date_key(job: Job) -> str:
+            # Return posted_at if available, otherwise empty string (sorts last)
+            return job.posted_at or ""
+        return sorted(jobs, key=get_date_key, reverse=True)
