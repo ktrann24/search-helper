@@ -174,7 +174,7 @@ class EmailNotifier:
 
                 <!-- Header with Hello Kitty -->
                 <div style="text-align: center; margin-bottom: 24px;">
-                    <img src="https://i.imgur.com/Ltuxrpu.png" alt="Hello Kitty" style="width: 80px; height: auto; margin-bottom: 12px;">
+                    <img src="https://raw.githubusercontent.com/ktrann24/search-helper/main/hellokitty.jpeg" alt="Hello Kitty" style="width: 80px; height: auto; margin-bottom: 12px;">
                     <h1 style="color: #ec4899; font-size: 26px; margin: 0; font-weight: 600;">Job Search Digest</h1>
                     <p style="color: #9ca3af; font-size: 14px; margin-top: 4px;">{date_str}</p>
                 </div>
