@@ -11,6 +11,7 @@ from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail, Email, To, Content, Header
 
 from .config import SENDGRID_API_KEY, FROM_EMAIL, TO_EMAIL, DRY_RUN
+from .processor import is_general_ledger_job
 
 
 @dataclass
@@ -128,10 +129,15 @@ class EmailNotifier:
                 if job.department:
                     dept_html = f'<p style="font-size: 11px; color: #6b7280; margin: 0 0 8px 0;">🏢 {job.department}</p>'
 
+                # Add GL badge for general ledger jobs
+                gl_badge = ""
+                if is_general_ledger_job(job):
+                    gl_badge = '<span style="display: inline-block; background-color: #10b981; color: #ffffff; font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle;">GL</span>'
+
                 hot_jobs_html += f'''
                 <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border: 2px solid #f472b6; border-radius: 12px; margin-bottom: 12px; background-color: #ffffff;">
                     <tr><td style="padding: 16px; background-color: #ffffff;">
-                        <p style="font-size: 16px; font-weight: 700; color: #1f2937; margin: 0 0 6px 0;"><span style="color: #1f2937;">{job.title}</span></p>
+                        <p style="font-size: 16px; font-weight: 700; color: #1f2937; margin: 0 0 6px 0;"><span style="color: #1f2937;">{job.title}</span>{gl_badge}</p>
                         <p style="font-size: 14px; color: #be185d; font-weight: 600; margin: 0 0 4px 0;">{job.company}</p>
                         <p style="font-size: 12px; color: #6b7280; margin: 0 0 4px 0;">📍 {job.location}</p>
                         {dept_html}
@@ -147,10 +153,15 @@ class EmailNotifier:
             if job.department:
                 dept_html = f'<span style="color: #6b7280;"> · {job.department}</span>'
 
+            # Add GL badge for general ledger jobs
+            gl_badge = ""
+            if is_general_ledger_job(job):
+                gl_badge = '<span style="display: inline-block; background-color: #10b981; color: #ffffff; font-size: 9px; font-weight: 600; padding: 2px 5px; border-radius: 4px; margin-left: 6px; vertical-align: middle;">GL</span>'
+
             all_jobs_html += f'''
             <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-bottom: 1px solid #f3e8ff;">
                 <tr><td style="padding: 14px 0;">
-                    <p style="font-size: 15px; font-weight: 700; color: #1f2937; margin: 0 0 2px 0;"><span style="color: #1f2937;">{job.title}</span></p>
+                    <p style="font-size: 15px; font-weight: 700; color: #1f2937; margin: 0 0 2px 0;"><span style="color: #1f2937;">{job.title}</span>{gl_badge}</p>
                     <p style="font-size: 13px; color: #be185d; font-weight: 600; margin: 0 0 2px 0;">{job.company}{dept_html}</p>
                     <p style="font-size: 12px; color: #6b7280; margin: 0 0 6px 0;">📍 {job.location}</p>
                     <a href="{job.url}" style="font-size: 12px; color: #ec4899; text-decoration: none; font-weight: 500;">Apply →</a>
