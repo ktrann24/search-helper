@@ -21,6 +21,12 @@ class Job:
     department: Optional[str] = None
 
 
+def is_general_ledger_job(job: Job) -> bool:
+    """Check if a job specifically mentions general ledger in title or department."""
+    text_to_check = f"{job.title} {job.department or ''}".lower()
+    return "general ledger" in text_to_check or "gl accountant" in text_to_check
+
+
 class JobProcessor:
     """Filters and processes job listings."""
 
