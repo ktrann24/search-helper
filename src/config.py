@@ -75,6 +75,52 @@ LOCATION_KEYWORDS = [
     "wfh",
 ]
 
+# Keywords that indicate a US-based position
+# Used to filter remote jobs - must contain one of these to be included
+US_LOCATION_KEYWORDS = [
+    "united states",
+    "usa",
+    "us",
+    ", ca",
+    "california",
+    "new york",
+    ", ny",
+    "texas",
+    ", tx",
+    "washington",
+    ", wa",
+    "colorado",
+    ", co",
+    "massachusetts",
+    ", ma",
+    "illinois",
+    ", il",
+    "north america",
+]
+
+# Keywords that indicate an international (non-US) position - exclude these
+INTERNATIONAL_EXCLUDE_KEYWORDS = [
+    "uk",
+    "united kingdom",
+    "london",
+    "ireland",
+    "dublin",
+    "germany",
+    "berlin",
+    "canada",
+    "toronto",
+    "vancouver",
+    "australia",
+    "sydney",
+    "singapore",
+    "india",
+    "bangalore",
+    "emea",
+    "apac",
+    "latam",
+    "europe",
+]
+
 # Location priority tiers (lower = higher priority)
 # Used to sort jobs: SF first, Remote second
 LOCATION_PRIORITY = {

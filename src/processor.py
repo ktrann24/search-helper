@@ -8,6 +8,8 @@ from .config import (
     TITLE_EXCLUDE_KEYWORDS,
     LOCATION_KEYWORDS,
     LOCATION_PRIORITY,
+    US_LOCATION_KEYWORDS,
+    INTERNATIONAL_EXCLUDE_KEYWORDS,
 )
 
 
@@ -75,11 +77,39 @@ class JobProcessor:
         return any(keyword in title_lower for keyword in self.exclude_keywords)
 
     def _matches_location(self, location: str) -> bool:
-        """Check if location matches any location keyword."""
+        """
+        Check if location matches criteria:
+        - San Francisco jobs: always included
+        - Remote jobs: only if US-based (not international)
+        """
         if not location:
             return False
         location_lower = location.lower()
-        return any(keyword in location_lower for keyword in self.location_keywords)
+
+        # Check if it matches any location keyword (SF or Remote)
+        matches_keyword = any(keyword in location_lower for keyword in self.location_keywords)
+        if not matches_keyword:
+            return False
+
+        # If it's a San Francisco job, always include
+        if "san francisco" in location_lower or "sf" in location_lower:
+            return True
+
+        # For remote jobs, check if it's US-based
+        # Exclude if it contains international keywords
+        intl_keywords = [k.lower() for k in INTERNATIONAL_EXCLUDE_KEYWORDS]
+        if any(keyword in location_lower for keyword in intl_keywords):
+            return False
+
+        # Include if it contains US keywords, or if location is generic "Remote"
+        us_keywords = [k.lower() for k in US_LOCATION_KEYWORDS]
+        has_us_indicator = any(keyword in location_lower for keyword in us_keywords)
+
+        # Accept generic "Remote" without country specification (likely US company)
+        # But reject if it explicitly mentions non-US locations
+        is_generic_remote = location_lower.strip() in ["remote", "hybrid", "remote - us", "us remote"]
+
+        return has_us_indicator or is_generic_remote
 
     def deduplicate(self, jobs: list[Job]) -> list[Job]:
         """Remove duplicate jobs based on URL."""
