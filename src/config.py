@@ -53,6 +53,7 @@ TITLE_EXCLUDE_KEYWORDS = [
     "billing",
     "collections",
     "credit analyst",
+    "accounts payable manager",
     # Engineering/Product roles with "accounting" in name
     "software engineer",
     "product",
@@ -61,21 +62,33 @@ TITLE_EXCLUDE_KEYWORDS = [
 
 # Location keywords (case-insensitive)
 # Must match at least one to be included
+# Focused on San Francisco and Remote only
 LOCATION_KEYWORDS = [
+    # San Francisco
     "san francisco",
     "sf",
+    # Remote options
     "remote",
     "hybrid",
-    "usa",
-    "united states",
-    "bay area",
-    "california",
-    "ca",
-    "us",
     "anywhere",
     "work from home",
     "wfh",
 ]
+
+# Location priority tiers (lower = higher priority)
+# Used to sort jobs: SF first, Remote second
+LOCATION_PRIORITY = {
+    # Tier 1 - San Francisco (highest priority)
+    "san francisco": 1,
+    "sf": 1,
+
+    # Tier 2 - Remote
+    "remote": 2,
+    "work from home": 2,
+    "wfh": 2,
+    "anywhere": 2,
+    "hybrid": 2,
+}
 
 # Companies using Greenhouse ATS
 # Format: (company_slug, display_name)
@@ -126,6 +139,21 @@ GREENHOUSE_COMPANIES = [
     ("reddit", "Reddit"),
     ("lyft", "Lyft"),
     ("linkedin", "LinkedIn"),
+    # Additional companies
+    ("mercury", "Mercury"),
+    ("doordashusa", "DoorDash"),
+    ("andurilindustries", "Anduril"),
+    ("hubspotjobs", "HubSpot"),
+    ("grammarly", "Grammarly"),
+    ("duolingo", "Duolingo"),
+    # Hot tech companies added
+    ("verkada", "Verkada"),
+    ("wizinc", "Wiz"),
+    ("chainguard", "Chainguard"),
+    ("cerebrassystems", "Cerebras"),
+    ("gleanwork", "Glean"),
+    ("heygen", "HeyGen"),
+    ("astranis", "Astranis"),
 ]
 
 # Companies using Ashby ATS
@@ -141,6 +169,16 @@ ASHBY_COMPANIES = [
     ("perplexity", "Perplexity"),
     ("cohere", "Cohere"),
     ("runway", "Runway"),
+    # Additional companies
+    ("vanta", "Vanta"),
+    ("anyscale", "Anyscale"),
+    ("replit", "Replit"),
+    ("cursor", "Cursor"),
+    # Hot tech companies added
+    ("harvey", "Harvey"),
+    ("cognition", "Cognition"),
+    ("WRITER", "Writer"),
+    ("Mintlify", "Mintlify"),
 ]
 
 # Companies using Lever ATS

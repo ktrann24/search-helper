@@ -2,10 +2,12 @@
 
 from dataclasses import dataclass
 from typing import Optional
+from datetime import datetime
 from .config import (
     TITLE_INCLUDE_KEYWORDS,
     TITLE_EXCLUDE_KEYWORDS,
     LOCATION_KEYWORDS,
+    LOCATION_PRIORITY,
 )
 
 
@@ -99,3 +101,47 @@ class JobProcessor:
             # Return posted_at if available, otherwise empty string (sorts last)
             return job.posted_at or ""
         return sorted(jobs, key=get_date_key, reverse=True)
+
+    def _get_location_priority(self, location: str) -> int:
+        """
+        Get priority score for a location (lower = higher priority).
+        Returns:
+            1 = San Francisco (highest priority)
+            2 = Remote
+            3 = Other matching locations
+            999 = No match
+        """
+        if not location:
+            return 999
+
+        location_lower = location.lower()
+        best_priority = 999
+
+        for keyword, priority in LOCATION_PRIORITY.items():
+            if keyword in location_lower:
+                best_priority = min(best_priority, priority)
+
+        return best_priority
+
+    def _date_to_timestamp(self, date_str: str) -> int:
+        """Convert date string to Unix timestamp for sorting."""
+        if not date_str:
+            return 0
+        try:
+            dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+            return int(dt.timestamp())
+        except (ValueError, AttributeError):
+            return 0
+
+    def sort_by_location_then_date(self, jobs: list[Job]) -> list[Job]:
+        """
+        Sort jobs by location priority (SF first, Remote second, Others third),
+        then by date (newest first) within each location tier.
+        """
+        def get_sort_key(job: Job) -> tuple:
+            location_priority = self._get_location_priority(job.location)
+            # Negate timestamp so newest sorts first
+            date_key = -self._date_to_timestamp(job.posted_at or "")
+            return (location_priority, date_key)
+
+        return sorted(jobs, key=get_sort_key)

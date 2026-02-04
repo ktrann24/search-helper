@@ -1,4 +1,4 @@
-name: Daily Job Search
+name: Job Search
 
 on:
   # Run Monday, Wednesday, Friday at 7am PST (3pm UTC)

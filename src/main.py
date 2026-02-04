@@ -140,11 +140,11 @@ def main():
     new_jobs = storage.filter_new_jobs(unique_jobs)
     print(f"New jobs (not seen before): {len(new_jobs)}")
 
-    # Sort all jobs by date (newest first)
-    all_sorted = processor.sort_by_date(unique_jobs)
+    # Sort all jobs by location priority (SF first, Remote second), then by date
+    all_sorted = processor.sort_by_location_then_date(unique_jobs)
 
-    # Get top 5 newest as "hot" jobs
-    hot_jobs = processor.sort_by_date(new_jobs)[:5]
+    # Get top 5 "hot" jobs prioritizing SF and Remote locations
+    hot_jobs = processor.sort_by_location_then_date(new_jobs)[:5]
 
     # Print job details
     print("\n" + "-" * 60)
