@@ -200,6 +200,8 @@ GREENHOUSE_COMPANIES = [
     ("gleanwork", "Glean"),
     ("heygen", "HeyGen"),
     ("astranis", "Astranis"),
+    ("clarifai", "Clarifai"),
+    ("xai", "xAI"),
 ]
 
 # Companies using Ashby ATS
@@ -225,6 +227,18 @@ ASHBY_COMPANIES = [
     ("cognition", "Cognition"),
     ("WRITER", "Writer"),
     ("Mintlify", "Mintlify"),
+    # AI companies batch
+    ("elevenlabs", "ElevenLabs"),
+    ("lovable", "Lovable"),
+    ("modal", "Modal"),
+    ("granola", "Granola"),
+    ("Abridge", "Abridge"),
+    ("ambiencehealthcare", "Ambience Healthcare"),
+    ("Crusoe", "Crusoe"),
+    ("novita-ai", "Novita AI"),
+    ("Juicebox", "Juicebox"),
+    ("peec", "Peec AI"),
+    ("profound", "Profound"),
 ]
 
 # Companies using Lever ATS
