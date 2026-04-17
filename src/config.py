@@ -5,10 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Email configuration
-SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY", "")
-FROM_EMAIL = os.getenv("FROM_EMAIL", "")
-TO_EMAIL = os.getenv("TO_EMAIL", "")
+# Slack configuration
+SLACK_WEBHOOK_URL = os.getenv("SLACK_WEBHOOK_URL", "")
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() == "true"
 
 # Job title keywords to INCLUDE (case-insensitive)
