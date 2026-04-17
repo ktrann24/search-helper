@@ -21,13 +21,10 @@ TITLE_INCLUDE_KEYWORDS = [
     "senior accountant",
     "corporate accountant",
     "financial accountant",
-    # Broader accounting (often GL-related)
-    "accountant",  # Catches generic accountant roles
-    "accounting analyst",
     # GL-adjacent roles
-    "sec reporting",
-    "financial reporting",
     "technical accounting",
+    "accounting operations",
+    "accounting analyst",
 ]
 
 # Job title keywords to EXCLUDE (case-insensitive)
@@ -45,7 +42,15 @@ TITLE_EXCLUDE_KEYWORDS = [
     "lead",
     "principal",
     "cfo",
-    # Specialist roles (not GL-focused)
+    # Non-GL accounting specializations
+    "revenue",        # revenue accountant, revenue accounting
+    "commissions",
+    "cost accountant",
+    "cost of revenue",
+    "fleet",
+    "derivatives",
+    "broker dealer",
+    "asset management",
     "accounts receivable",
     "payroll",
     "tax accountant",
@@ -53,7 +58,7 @@ TITLE_EXCLUDE_KEYWORDS = [
     "billing",
     "collections",
     "credit analyst",
-    "accounts payable manager",
+    "accounts payable",
     # Engineering/Product roles with "accounting" in name
     "software engineer",
     "product",
@@ -150,7 +155,6 @@ GREENHOUSE_COMPANIES = [
     ("databricks", "Databricks"),
     ("airtable", "Airtable"),
     ("webflow", "Webflow"),
-    ("retool", "Retool"),
     ("amplitude", "Amplitude"),
     ("calendly", "Calendly"),
     ("lattice", "Lattice"),
@@ -190,8 +194,8 @@ GREENHOUSE_COMPANIES = [
     ("doordashusa", "DoorDash"),
     ("andurilindustries", "Anduril"),
     ("hubspotjobs", "HubSpot"),
-    ("grammarly", "Grammarly"),
     ("duolingo", "Duolingo"),
+    # Note: Grammarly removed - not on Greenhouse/Ashby/Lever
     # Hot tech companies added
     ("verkada", "Verkada"),
     ("wizinc", "Wiz"),
@@ -202,6 +206,20 @@ GREENHOUSE_COMPANIES = [
     ("astranis", "Astranis"),
     ("clarifai", "Clarifai"),
     ("xai", "xAI"),
+    # Note: Retool moved to Ashby, Grammarly removed (no supported ATS)
+    # Forbes AI 50 additions (Greenhouse)
+    ("fireworksai", "Fireworks AI"),
+    ("hebbia", "Hebbia"),
+    ("figureai", "Figure AI"),
+    ("snorkelai", "Snorkel AI"),
+    ("togetherai", "Together AI"),
+    ("coactive", "Coactive"),
+    ("worldlabs", "World Labs"),
+    ("vannevarlabs", "Vannevar Labs"),
+    # Forbes AI 50 2026 additions (Greenhouse)
+    ("appliedintuition", "Applied Intuition"),
+    ("blackforestlabs", "Black Forest Labs"),
+    ("thinkingmachines", "Thinking Machines Lab"),
 ]
 
 # Companies using Ashby ATS
@@ -222,6 +240,7 @@ ASHBY_COMPANIES = [
     ("anyscale", "Anyscale"),
     ("replit", "Replit"),
     ("cursor", "Cursor"),
+    ("retool", "Retool"),
     # Hot tech companies added
     ("harvey", "Harvey"),
     ("cognition", "Cognition"),
@@ -239,6 +258,32 @@ ASHBY_COMPANIES = [
     ("Juicebox", "Juicebox"),
     ("peec", "Peec AI"),
     ("profound", "Profound"),
+    # Forbes AI 50 additions (Ashby)
+    ("synthesia", "Synthesia"),
+    ("sierra", "Sierra"),
+    ("lambda", "Lambda"),
+    ("decagon", "Decagon"),
+    ("photoroom", "Photoroom"),
+    ("speak", "Speak"),
+    ("langchain", "LangChain"),
+    ("openevidence", "OpenEvidence"),
+    ("mercor", "Mercor"),
+    ("suno", "Suno"),
+    ("baseten", "Baseten"),
+    ("pika", "Pika"),
+    ("vast", "VAST Data"),
+    ("deepl", "DeepL"),
+    # Forbes AI 50 2026 additions (Ashby)
+    ("gamma", "Gamma"),
+    ("eliseai", "EliseAI"),
+    ("chaidiscovery", "Chai Discovery"),
+    ("listenlabs", "Listen Labs"),
+    ("reflectionai", "Reflection"),
+    ("legora", "Legora"),
+    ("krea", "Krea"),
+    ("physicalintelligence", "Physical Intelligence"),
+    ("ssi", "Safe Superintelligence"),
+    ("rogo", "Rogo"),
 ]
 
 # Companies using Lever ATS
