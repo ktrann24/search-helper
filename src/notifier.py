@@ -32,17 +32,16 @@ class SlackNotifier:
 
     def send_digest(
         self,
-        hot_jobs: list[Job],
         all_jobs: list[Job],
         company_count: int,
+        hot_jobs: list[Job] = None,  # unused, kept for compat
     ) -> bool:
         """Send job digest to Slack."""
-        blocks = self._build_blocks(hot_jobs, all_jobs, company_count)
+        blocks = self._build_blocks(all_jobs, company_count)
 
         if self.dry_run:
             print(f"\n{'='*60}")
             print("DRY RUN - Slack message would be sent:")
-            print(f"  Hot jobs: {len(hot_jobs)}")
             print(f"  Total open: {len(all_jobs)}")
             print(f"{'='*60}\n")
             return True
@@ -68,12 +67,7 @@ class SlackNotifier:
             print(f"Error sending Slack message: {e}")
             return False
 
-    def _build_blocks(
-        self,
-        hot_jobs: list[Job],
-        all_jobs: list[Job],
-        company_count: int,
-    ) -> list:
+    def _build_blocks(self, all_jobs: list[Job], company_count: int) -> list:
         """Build Slack Block Kit payload."""
         date_str = datetime.now().strftime("%A, %B %d")
         blocks = []
@@ -81,43 +75,19 @@ class SlackNotifier:
         # Header
         blocks.append({
             "type": "header",
-            "text": {
-                "type": "plain_text",
-                "text": f"🐱 Jessica's Job Digest — {date_str}",
-            }
+            "text": {"type": "plain_text", "text": f"🐱 Jessica's Job Digest — {date_str}"}
         })
 
         # Stats
-        new_label = f"{len(hot_jobs)} new  •  " if hot_jobs else ""
         blocks.append({
             "type": "section",
             "text": {
                 "type": "mrkdwn",
-                "text": f"*{new_label}{len(all_jobs)} open positions* across {company_count} companies",
+                "text": f"*{len(all_jobs)} open positions* across {company_count} companies",
             }
         })
 
         blocks.append({"type": "divider"})
-
-        # New / hot jobs
-        if hot_jobs:
-            blocks.append({
-                "type": "section",
-                "text": {"type": "mrkdwn", "text": f"*✨ New This Run ({len(hot_jobs)})*"}
-            })
-            for job in hot_jobs:
-                gl_tag = " `GL`" if is_general_ledger_job(job) else ""
-                blocks.append({
-                    "type": "section",
-                    "text": {
-                        "type": "mrkdwn",
-                        "text": (
-                            f"*<{job.url}|{job.title}>*{gl_tag}\n"
-                            f"{job.company}  •  📍 {job.location}"
-                        ),
-                    }
-                })
-            blocks.append({"type": "divider"})
 
         # All open positions
         blocks.append({

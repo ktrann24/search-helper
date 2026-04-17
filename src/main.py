@@ -136,48 +136,27 @@ def main():
     unique_jobs = processor.deduplicate(filtered_jobs)
     print(f"After deduplication: {len(unique_jobs)}")
 
-    # Identify new jobs (not seen before)
-    new_jobs = storage.filter_new_jobs(unique_jobs)
-    print(f"New jobs (not seen before): {len(new_jobs)}")
-
-    # Sort all jobs by location priority (SF first, Remote second), then by date
+    # Sort by location priority (SF first, Remote second), then date
     all_sorted = processor.sort_by_location_then_date(unique_jobs)
 
-    # Get top 5 "hot" jobs prioritizing SF and Remote locations
-    hot_jobs = processor.sort_by_location_then_date(new_jobs)[:5]
-
-    # Print job details
-    print("\n" + "-" * 60)
-    print(f"HOT NEW JOBS ({len(hot_jobs)}):")
-    print("-" * 60)
-    for job in hot_jobs:
-        print(f"\n{job.title}")
-        print(f"  Company:  {job.company}")
-        print(f"  Location: {job.location}")
-        if job.department:
-            print(f"  Team:     {job.department}")
-        print(f"  URL:      {job.url}")
-
+    # Print summary
     print("\n" + "-" * 60)
     print(f"ALL OPEN POSITIONS ({len(all_sorted)}):")
     print("-" * 60)
-    for job in all_sorted[:20]:  # Show first 20 in console
+    for job in all_sorted[:20]:
         print(f"  - {job.title} @ {job.company}")
     if len(all_sorted) > 20:
         print(f"  ... and {len(all_sorted) - 20} more")
 
-    # Send email notification with hot jobs and all jobs
+    # Send Slack notification
     print("\n" + "=" * 60)
     print("Sending notification...")
     success = notifier.send_digest(
-        hot_jobs=hot_jobs,
         all_jobs=all_sorted,
-        company_count=total_companies
+        company_count=total_companies,
     )
 
     if success:
-        # Sync storage with current open jobs
-        # This adds new jobs and removes closed ones
         storage.sync_with_current_jobs(unique_jobs)
         print(f"Tracking {len(unique_jobs)} open positions")
 
